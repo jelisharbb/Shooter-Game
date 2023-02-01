@@ -94,12 +94,15 @@ class Explosion {
     this.sound.src = "boom.wav";
     this.timeSinceLastFrame = 0;
     this.frameInterval = 200;
+    this.markedForDeletion = false;
   }
   update(deltaTime) {
     if (this.frame === 0) this.sound.play();
     this.timeSinceLastFrame += deltaTime;
     if (this.timeSinceLastFrame > this.frameInterval) {
       this.frame++;
+      this.timeSinceLastFrame = 0;
+      if (this.frame > 5) this.markedForDeletion = true;
     }
   }
   draw() {
@@ -110,7 +113,7 @@ class Explosion {
       this.spriteWidth,
       this.spriteHeight,
       this.x,
-      this.y,
+      this.y - this.size / 4,
       this.size,
       this.size
     );
@@ -134,8 +137,10 @@ window.addEventListener("click", function (e) {
       object.randomColors[1] === pc[1] &&
       object.randomColors[2] === pc[2]
     ) {
+      // collision detected
       object.markedForDeletion = true;
       score++;
+      explosions.push(new Explosion(object.x, object.y, object.width));
     }
   });
 });
@@ -154,9 +159,10 @@ function animate(timeStamp) {
     });
   }
   drawScore();
-  [...ravens].forEach((object) => object.update(deltaTime));
-  [...ravens].forEach((object) => object.draw());
+  [...ravens, ...explosions].forEach((object) => object.update(deltaTime));
+  [...ravens, ...explosions].forEach((object) => object.draw());
   ravens = ravens.filter((object) => !object.markedForDeletion);
+  explosions = explosions.filter((object) => !object.markedForDeletion);
   requestAnimationFrame(animate);
 }
 
