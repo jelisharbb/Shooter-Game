@@ -9,6 +9,7 @@ collisionCanvas.width = window.innerWidth;
 collisionCanvas.height = window.innerHeight;
 
 let score = 0;
+let gameOver = false;
 ctx.font = "50px Impact";
 
 let timeToNextRaven = 0;
@@ -61,6 +62,7 @@ class Raven {
       else this.frame++;
       this.timeSinceFlap = 0;
     }
+    if (this.x < 0 - this.width) gameOver = true;
   }
   draw() {
     collisionCtx.fillStyle = this.color;
@@ -127,6 +129,23 @@ function drawScore() {
   ctx.fillText("Score: " + score, 50, 75);
 }
 
+function drawGameOver() {
+  ctx.textAlign = "center";
+  ctx.fillStyle = "black";
+  ctx.fillText(
+    "GAME OVER, your score is " + score,
+    canvas.width / 2,
+    canvas.height / 2
+  );
+  ctx.textAlign = "center";
+  ctx.fillStyle = "white";
+  ctx.fillText(
+    "GAME OVER, your score is " + score,
+    canvas.width / 2 - 5,
+    canvas.height / 2 - 5
+  );
+}
+
 window.addEventListener("click", function (e) {
   const detectPixelColor = collisionCtx.getImageData(e.x, e.y, 1, 1);
   console.log(detectPixelColor);
@@ -163,7 +182,8 @@ function animate(timeStamp) {
   [...ravens, ...explosions].forEach((object) => object.draw());
   ravens = ravens.filter((object) => !object.markedForDeletion);
   explosions = explosions.filter((object) => !object.markedForDeletion);
-  requestAnimationFrame(animate);
+  if (!gameOver) requestAnimationFrame(animate);
+  else drawGameOver();
 }
 
 animate(0);
