@@ -10,7 +10,6 @@ collisionCanvas.height = window.innerHeight;
 
 let score = 0;
 let gameOver = false;
-ctx.font = "50px Impact";
 
 let timeToNextRaven = 0;
 let ravenInterval = 500;
@@ -99,7 +98,7 @@ class Explosion {
     this.y = y;
     this.frame = 0;
     this.sound = new Audio();
-    this.sound.src = "boom.wav";
+    this.sound.src = "audios/boom.wav";
     this.timeSinceLastFrame = 0;
     this.frameInterval = 200;
     this.markedForDeletion = false;
@@ -157,27 +156,37 @@ class Particle {
 }
 
 function drawScore() {
+  ctx.font = "40px Impact";
   ctx.fillStyle = "black";
-  ctx.fillText("Score: " + score, 55, 80);
-  ctx.fillStyle = "white";
   ctx.fillText("Score: " + score, 50, 75);
+  ctx.fillStyle = "white";
+  ctx.fillText("Score: " + score, 45, 70);
 }
 
 function drawGameOver() {
+  ctx.font = "70px Impact";
   ctx.textAlign = "center";
   ctx.fillStyle = "black";
-  ctx.fillText(
-    "GAME OVER, your score is " + score,
-    canvas.width / 2,
-    canvas.height / 2
-  );
+  ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
   ctx.textAlign = "center";
-  ctx.fillStyle = "white";
+  ctx.fillStyle = "rgb(254, 92, 92)";
+  ctx.fillText("GAME OVER", canvas.width / 2 - 5, canvas.height / 2 - 5);
+
+  ctx.font = "50px Impact";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "black";
+  ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2 + 60);
+  ctx.textAlign = "center";
+  ctx.fillStyle = "rgb(172, 223, 135)";
   ctx.fillText(
-    "GAME OVER, your score is " + score,
+    "Score: " + score,
     canvas.width / 2 - 5,
-    canvas.height / 2 - 5
+    canvas.height / 2 - 5 + 60
   );
+
+  const gameOverSound = new Audio();
+  gameOverSound.src = "audios/gameover1.wav";
+  gameOverSound.play();
 }
 
 window.addEventListener("click", function (e) {
