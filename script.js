@@ -185,7 +185,7 @@ function drawGameOver() {
   );
 
   const gameOverSound = new Audio();
-  gameOverSound.src = "audios/gameover1.wav";
+  gameOverSound.src = "audios/gameover.wav";
   gameOverSound.play();
 }
 
