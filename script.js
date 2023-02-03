@@ -229,7 +229,43 @@ function animate(timeStamp) {
   explosions = explosions.filter((object) => !object.markedForDeletion);
   particles = particles.filter((object) => !object.markedForDeletion);
   if (!gameOver) requestAnimationFrame(animate);
-  else drawGameOver();
+  else {
+    drawGameOver();
+    pauseMusic();
+  }
 }
 
-animate(0);
+const background = new Audio();
+background.src = "audios/backgroundMusic.mp3";
+
+function playMusic() {
+  background.play();
+}
+
+function pauseMusic() {
+  background.pause();
+}
+
+const start = document.getElementById("start");
+const restart = document.getElementById("restart");
+
+if (
+  start.addEventListener("click", () => {
+    const startSound = new Audio();
+    startSound.src = "audios/start.wav";
+    startSound.play();
+    animate(0);
+    playMusic();
+  })
+);
+
+if (
+  restart.addEventListener("click", () => {
+    const startSound = new Audio();
+    startSound.src = "audios/restart.wav";
+    startSound.play();
+    setTimeout(function () {
+      window.location.reload();
+    }, 300);
+  })
+);
