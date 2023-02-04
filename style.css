@@ -1,12 +1,12 @@
 body {
-  background-color: rgb(35, 83, 102);
+  background-color: #0c5679;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
 }
 
 canvas {
-  background-color: rgb(79, 155, 185);
+  background-color: black;
   width: 85%;
   height: 85%;
   position: absolute;
@@ -36,11 +36,13 @@ button {
   font-size: 20px;
   cursor: pointer;
   transition: 0.1s;
+  background-color: #f28a0f;
+  border: none;
 }
 
 button:hover {
   background-color: #000000;
-  box-shadow: 0 0 10px 5px rgb(114, 218, 246);
+  box-shadow: 0 0 10px 5px #f28a0f;
   transform: scaleX(1.05);
-  color: rgb(95, 208, 239);
+  color: #f28a0f;
 }
