@@ -57,8 +57,11 @@ class Raven {
       this.directionY = this.directionY * -1;
     }
 
-    this.x -= this.directionX; // level 1, scores 0 to 10
-    this.y -= this.directionY;
+    if (score >= 0 && score < 11) {
+      this.x -= this.directionX; // level 1, scores 0 to 10
+      this.y -= this.directionY;
+      ravenInterval = 900;
+    }
 
     if (score > 10 && score < 21) {
       this.x -= this.directionX + 0.0001; // level 2, scores 11 to 20
@@ -185,7 +188,7 @@ function drawScore() {
   ctx.font = "35px Impact";
   ctx.fillStyle = "black";
   ctx.fillText("Score: " + score, 35, 65);
-  ctx.fillStyle = "white";
+  ctx.fillStyle = "#f28a0f";
   ctx.fillText("Score: " + score, 30, 60);
 }
 
@@ -195,27 +198,27 @@ function drawLevel() {
   if (score >= 0 && score <= 10) {
     ctx.fillStyle = "black";
     ctx.fillText("Level: 1", 35, 105);
-    ctx.fillStyle = "orange";
+    ctx.fillStyle = "white";
     ctx.fillText("Level: 1", 30, 100);
   } else if (score >= 11 && score <= 20) {
     ctx.fillStyle = "black";
     ctx.fillText("Level: 2", 35, 105);
-    ctx.fillStyle = "orange";
+    ctx.fillStyle = "white";
     ctx.fillText("Level: 2", 30, 100);
   } else if (score >= 21 && score <= 30) {
     ctx.fillStyle = "black";
     ctx.fillText("Level: 3", 35, 105);
-    ctx.fillStyle = "orange";
+    ctx.fillStyle = "white";
     ctx.fillText("Level: 3", 30, 100);
   } else if (score >= 31 && score <= 40) {
     ctx.fillStyle = "black";
     ctx.fillText("Level: 4", 35, 105);
-    ctx.fillStyle = "orange";
+    ctx.fillStyle = "white";
     ctx.fillText("Level: 4", 30, 100);
   } else {
     ctx.fillStyle = "black";
     ctx.fillText("Level: 5", 35, 105);
-    ctx.fillStyle = "orange";
+    ctx.fillStyle = "white";
     ctx.fillText("Level: 5", 30, 100);
   }
 }
