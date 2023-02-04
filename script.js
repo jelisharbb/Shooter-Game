@@ -52,6 +52,7 @@ class Raven {
       ")";
     this.hasTrail = Math.random() > 0.5;
   }
+
   update(deltaTime) {
     if (this.y < 0 || this.y > canvas.height - this.height) {
       this.directionY = this.directionY * -1;
@@ -95,6 +96,7 @@ class Raven {
     }
     if (this.x < 0 - this.width) gameOver = true;
   }
+
   draw() {
     collisionCtx.fillStyle = this.color;
     collisionCtx.fillRect(this.x, this.y, this.width, this.height);
@@ -129,6 +131,7 @@ class Explosion {
     this.frameInterval = 200;
     this.markedForDeletion = false;
   }
+
   update(deltaTime) {
     if (this.frame === 0) this.sound.play();
     this.timeSinceLastFrame += deltaTime;
@@ -138,6 +141,7 @@ class Explosion {
       if (this.frame > 5) this.markedForDeletion = true;
     }
   }
+
   draw() {
     ctx.drawImage(
       this.image,
@@ -165,11 +169,13 @@ class Particle {
     this.speedX = Math.random() * 1 + 0.5;
     this.color = color;
   }
+
   update() {
     this.x += this.speedX;
     this.radius += 0.3;
     if (this.radius > this.maxRadius - 5) this.markedForDeletion = true;
   }
+
   draw() {
     ctx.save();
     ctx.globalAlpha = 1 - this.radius / this.maxRadius;
@@ -181,6 +187,7 @@ class Particle {
   }
 }
 
+// for displaying score
 function drawScore() {
   ctx.font = "35px Impact";
   ctx.fillStyle = "black";
@@ -189,9 +196,9 @@ function drawScore() {
   ctx.fillText("Score: " + score, 30, 60);
 }
 
+// for displaying level
 function drawLevel() {
   ctx.font = "35px Impact";
-
   if (score >= 0 && score <= 10) {
     ctx.fillStyle = "black";
     ctx.fillText("Level: 1", 35, 105);
@@ -270,6 +277,7 @@ function animate(timeStamp) {
   let deltaTime = timeStamp - lastTime;
   lastTime = timeStamp;
   timeToNextRaven += deltaTime - 7;
+
   if (timeToNextRaven > ravenInterval) {
     ravens.push(new Raven());
     timeToNextRaven = 0;
@@ -277,9 +285,11 @@ function animate(timeStamp) {
       return a.width - b.width;
     });
   }
+
   ctx.drawImage(backgroundSky, 0, 0, 1325, 630);
   drawScore();
   drawLevel();
+
   [...particles, ...ravens, ...explosions].forEach((object) =>
     object.update(deltaTime)
   );
@@ -287,6 +297,7 @@ function animate(timeStamp) {
   ravens = ravens.filter((object) => !object.markedForDeletion);
   explosions = explosions.filter((object) => !object.markedForDeletion);
   particles = particles.filter((object) => !object.markedForDeletion);
+
   if (!gameOver) requestAnimationFrame(animate);
   else {
     drawGameOver();
@@ -294,6 +305,7 @@ function animate(timeStamp) {
   }
 }
 
+// for playing and pausing game music
 const background = new Audio();
 background.src = "audios/backgroundMusic.mp3";
 
@@ -305,9 +317,8 @@ function pauseMusic() {
   background.pause();
 }
 
+// start button
 const start = document.getElementById("start");
-const restart = document.getElementById("restart");
-
 if (
   start.addEventListener("click", () => {
     const startSound = new Audio();
@@ -318,6 +329,8 @@ if (
   })
 );
 
+// restart button
+const restart = document.getElementById("restart");
 if (
   restart.addEventListener("click", () => {
     const startSound = new Audio();
