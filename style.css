@@ -7,8 +7,8 @@ body {
 
 canvas {
   background-color: rgb(79, 155, 185);
-  width: 80%;
-  height: 80%;
+  width: 85%;
+  height: 85%;
   position: absolute;
   top: 45%;
   left: 50%;
@@ -17,4 +17,30 @@ canvas {
 
 #collisionCanvas {
   opacity: 0;
+}
+
+#buttonContainer {
+  position: absolute;
+  top: 93%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+}
+
+button {
+  width: 250px;
+  height: 40px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+button:hover {
+  background-color: #000000;
+  box-shadow: 0 0 10px 5px rgb(114, 218, 246);
+  transform: scaleX(1.05);
+  color: rgb(95, 208, 239);
 }
