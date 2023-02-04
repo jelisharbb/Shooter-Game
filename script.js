@@ -8,11 +8,14 @@ const collisionCtx = collisionCanvas.getContext("2d");
 collisionCanvas.width = window.innerWidth;
 collisionCanvas.height = window.innerHeight;
 
+const backgroundSky = new Image();
+backgroundSky.src = "images/sky.jpg";
+
 let score = 0;
 let gameOver = false;
 
 let timeToNextRaven = 0;
-let ravenInterval = 500;
+let ravenInterval = 900;
 let lastTime = 0;
 
 let ravens = [];
@@ -25,8 +28,8 @@ class Raven {
     this.height = this.spriteHeight * this.sizeModifier;
     this.x = canvas.width;
     this.y = Math.random() * (canvas.height - this.height);
-    this.directionX = Math.random() * 5 + 3;
-    this.directionY = Math.random() * 5 - 2.5;
+    this.directionX = Math.random() * 1 + 1;
+    this.directionY = Math.random() * 3 - 1.5;
     this.markedForDeletion = false;
     this.image = new Image();
     this.image.src = "images/raven.png";
@@ -53,8 +56,31 @@ class Raven {
     if (this.y < 0 || this.y > canvas.height - this.height) {
       this.directionY = this.directionY * -1;
     }
-    this.x -= this.directionX;
+
+    this.x -= this.directionX; // level 1, scores 0 to 10
     this.y -= this.directionY;
+
+    if (score > 10 && score < 21) {
+      this.x -= this.directionX + 0.0001; // level 2, scores 11 to 20
+      this.y -= this.directionY + 0.0001;
+      ravenInterval = 800;
+    }
+    if (score > 20 || score == 31) {
+      this.x -= this.directionX + 0.0005; // level 3, scores 21 to 30
+      this.y -= this.directionY + 0.0005;
+      ravenInterval = 700;
+    }
+    if (score > 30 || score == 41) {
+      this.x -= this.directionX + 0.001; // level 4, scores 31 to 40
+      this.y -= this.directionY + 0.001;
+      ravenInterval = 600;
+    }
+    if (score > 40) {
+      this.x -= this.directionX + 0.005; // level 5, scores 41 and above
+      this.y -= this.directionY + 0.003;
+      ravenInterval = 500;
+    }
+
     if (this.x < 0 - this.width) this.markedForDeletion = true;
     this.timeSinceFlap += deltaTime;
     if (this.timeSinceFlap > this.flapInterval) {
@@ -156,11 +182,42 @@ class Particle {
 }
 
 function drawScore() {
-  ctx.font = "40px Impact";
+  ctx.font = "35px Impact";
   ctx.fillStyle = "black";
-  ctx.fillText("Score: " + score, 50, 75);
+  ctx.fillText("Score: " + score, 35, 65);
   ctx.fillStyle = "white";
-  ctx.fillText("Score: " + score, 45, 70);
+  ctx.fillText("Score: " + score, 30, 60);
+}
+
+function drawLevel() {
+  ctx.font = "35px Impact";
+
+  if (score >= 0 && score <= 10) {
+    ctx.fillStyle = "black";
+    ctx.fillText("Level: 1", 35, 105);
+    ctx.fillStyle = "orange";
+    ctx.fillText("Level: 1", 30, 100);
+  } else if (score >= 11 && score <= 20) {
+    ctx.fillStyle = "black";
+    ctx.fillText("Level: 2", 35, 105);
+    ctx.fillStyle = "orange";
+    ctx.fillText("Level: 2", 30, 100);
+  } else if (score >= 21 && score <= 30) {
+    ctx.fillStyle = "black";
+    ctx.fillText("Level: 3", 35, 105);
+    ctx.fillStyle = "orange";
+    ctx.fillText("Level: 3", 30, 100);
+  } else if (score >= 31 && score <= 40) {
+    ctx.fillStyle = "black";
+    ctx.fillText("Level: 4", 35, 105);
+    ctx.fillStyle = "orange";
+    ctx.fillText("Level: 4", 30, 100);
+  } else {
+    ctx.fillStyle = "black";
+    ctx.fillText("Level: 5", 35, 105);
+    ctx.fillStyle = "orange";
+    ctx.fillText("Level: 5", 30, 100);
+  }
 }
 
 function drawGameOver() {
@@ -177,7 +234,7 @@ function drawGameOver() {
   ctx.fillStyle = "black";
   ctx.fillText("Score: " + score, canvas.width / 2, canvas.height / 2 + 60);
   ctx.textAlign = "center";
-  ctx.fillStyle = "rgb(172, 223, 135)";
+  ctx.fillStyle = "#68bb59";
   ctx.fillText(
     "Score: " + score,
     canvas.width / 2 - 5,
@@ -212,7 +269,7 @@ function animate(timeStamp) {
   collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
   let deltaTime = timeStamp - lastTime;
   lastTime = timeStamp;
-  timeToNextRaven += deltaTime;
+  timeToNextRaven += deltaTime - 7;
   if (timeToNextRaven > ravenInterval) {
     ravens.push(new Raven());
     timeToNextRaven = 0;
@@ -220,7 +277,9 @@ function animate(timeStamp) {
       return a.width - b.width;
     });
   }
+  ctx.drawImage(backgroundSky, 0, 0, 1325, 630);
   drawScore();
+  drawLevel();
   [...particles, ...ravens, ...explosions].forEach((object) =>
     object.update(deltaTime)
   );
