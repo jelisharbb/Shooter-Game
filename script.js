@@ -57,31 +57,28 @@ class Raven {
       this.directionY = this.directionY * -1;
     }
 
-    if (score >= 0 && score < 11) {
-      this.x -= this.directionX; // level 1, scores 0 to 10
-      this.y -= this.directionY;
-      ravenInterval = 900;
-    }
+    this.x -= this.directionX; // level 1, scores 0 to 10
+    this.y -= this.directionY;
 
     if (score > 10 && score < 21) {
-      this.x -= this.directionX + 0.0001; // level 2, scores 11 to 20
-      this.y -= this.directionY + 0.0001;
+      this.x -= this.directionX + 0.002; // level 2, scores 11 to 20
+      this.y -= this.directionY + 0.002;
       ravenInterval = 800;
     }
     if (score > 20 || score == 31) {
-      this.x -= this.directionX + 0.0005; // level 3, scores 21 to 30
-      this.y -= this.directionY + 0.0005;
+      this.x -= this.directionX + 0.004; // level 3, scores 21 to 30
+      this.y -= this.directionY + 0.004;
       ravenInterval = 700;
     }
     if (score > 30 || score == 41) {
-      this.x -= this.directionX + 0.001; // level 4, scores 31 to 40
-      this.y -= this.directionY + 0.001;
-      ravenInterval = 600;
+      this.x -= this.directionX + 0.006; // level 4, scores 31 to 40
+      this.y -= this.directionY + 0.006;
+      ravenInterval = 700;
     }
     if (score > 40) {
-      this.x -= this.directionX + 0.005; // level 5, scores 41 and above
-      this.y -= this.directionY + 0.003;
-      ravenInterval = 500;
+      this.x -= this.directionX + 0.008; // level 5, scores 41 and above
+      this.y -= this.directionY + 0.008;
+      ravenInterval = 700;
     }
 
     if (this.x < 0 - this.width) this.markedForDeletion = true;
